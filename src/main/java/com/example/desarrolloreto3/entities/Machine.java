@@ -17,8 +17,8 @@ public class Machine implements Serializable {
     private String name;
     private String brand;
 
-    @Column(name = "year")
-    private Integer years;
+    @Column(name = "years")
+    private Integer year;
 
     private String description;
 
@@ -59,12 +59,12 @@ public class Machine implements Serializable {
         this.brand = brand;
     }
 
-    public Integer getYears() {
-        return years;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setYears(Integer years) {
-        this.years = years;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public String getDescription() {

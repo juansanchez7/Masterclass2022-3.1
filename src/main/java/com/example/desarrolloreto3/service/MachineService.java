@@ -36,6 +36,29 @@ public class MachineService {
 
     }
 
+
+    public Machine update(Machine m) {
+        if (m.getId() != null) {
+            Optional<Machine> e = machineRepository.getMachine(m.getId());
+            if (e.isPresent()) {
+                if (m.getName() != null) {
+                    e.get().setName(m.getName());
+                }
+                if (m.getBrand() != null) {
+                    e.get().setBrand(m.getBrand());
+                }
+                if (m.getYear() != null) {
+                    e.get().setYear(m.getYear());
+                }
+                if (m.getDescription() != null) {
+                    e.get().setDescription(m.getDescription());
+                }
+                return machineRepository.save(e.get());
+            }
+        }
+        return m;
+    }
+
     public boolean delete(int id) {
         boolean flag = false;
         Optional<Machine> e = machineRepository.getMachine(id);

@@ -1,6 +1,6 @@
 package com.example.desarrolloreto3.service;
 
-import com.example.desarrolloreto3.entities.Reservation;
+import com.example.desarrolloreto3.entities.Machine;
 import com.example.desarrolloreto3.entities.Score;
 import com.example.desarrolloreto3.repository.ScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,22 @@ public class ScoreService {
 
     }
 
+    public Score update(Score m) {
+        if (m.getIdScore() != null) {
+            Optional<Score> e = scoreRepository.getScore(m.getIdScore());
+            if (e.isPresent()) {
+                if (m.getMessageText() != null) {
+                    e.get().setMessageText(m.getMessageText());
+                }
+                if (m.getStars() != null) {
+                    e.get().setStars(m.getStars());
+                }
+                return scoreRepository.save(e.get());
+            }
+        }
+        return m;
+    }
+
     public boolean delete(int id) {
         boolean flag = false;
         Optional<Score> e = scoreRepository.getScore(id);
@@ -47,5 +63,3 @@ public class ScoreService {
         return flag;
     }
 }
-
-

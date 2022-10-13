@@ -29,11 +29,27 @@ public class CategoryService {
             Optional<Category> e = categoryRepository.getCategory(m.getId());
             if (e.isPresent()) {
                 return m;
-            }else{
+            } else {
                 return categoryRepository.save(m);
             }
         }
 
+    }
+
+    public Category update(Category m) {
+        if (m.getId() != null) {
+            Optional<Category> e = categoryRepository.getCategory(m.getId());
+            if (e.isPresent()) {
+                if (m.getName() != null) {
+                    e.get().setName(m.getName());
+                }
+                if (m.getDescription() != null) {
+                    e.get().setDescription(m.getDescription());
+                }
+                return categoryRepository.save(e.get());
+            }
+        }
+        return m;
     }
 
     public boolean delete(int id) {

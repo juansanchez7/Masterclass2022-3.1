@@ -1,10 +1,16 @@
 package com.example.desarrolloreto3.service;
 
 import com.example.desarrolloreto3.entities.Reservation;
+import com.example.desarrolloreto3.personalentity.CountClient;
+import com.example.desarrolloreto3.personalentity.StatusAmount;
 import com.example.desarrolloreto3.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +35,7 @@ public class ReservationService {
             Optional<Reservation> e = reservationRepository.getReservation(m.getIdReservation());
             if (e.isPresent()) {
                 return m;
-            }else{
+            } else {
                 return reservationRepository.save(m);
             }
         }
@@ -64,4 +70,33 @@ public class ReservationService {
         }
         return flag;
     }
+
+    public List<CountClient> getTopClients() {
+        return reservationRepository.getTopClients();
+    }
+
+    public StatusAmount getReservationStatusReport() {
+        List<Reservation> completed = reservationRepository.getReservationByStatus("completed");
+        List<Reservation> cancelled = reservationRepository.getReservationByStatus("cancelled");
+        return new StatusAmount(completed.size(),cancelled.size());
+    }
+
+    public List<Reservation> getReservationPeriod(String dateA, String dateB) {
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+        Date a = new Date();
+        Date b = new Date();
+        try {
+            a = parser.parse(dateA);
+            b = parser.parse(dateB);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (a.before(b)) {
+            return reservationRepository.getReservationPeriod(a, b);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
 }
+

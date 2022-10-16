@@ -1,6 +1,8 @@
 package com.example.desarrolloreto3.controller;
 
 import com.example.desarrolloreto3.entities.Reservation;
+import com.example.desarrolloreto3.personalentity.CountClient;
+import com.example.desarrolloreto3.personalentity.StatusAmount;
 import com.example.desarrolloreto3.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,4 +43,19 @@ public class ReservationController {
         public boolean delete(@PathVariable("id") int id) {
             return reservationService.delete(id);
         }
+
+        @GetMapping("/report-clients")
+        public List<CountClient>getReservationReportClient(){
+            return reservationService.getTopClients();
+        }
+
+        @GetMapping("/report-status")
+        public StatusAmount getReservationStatus(){
+            return reservationService.getReservationStatusReport();
     }
+
+        @GetMapping("/report-dates/{dateOne}/{dateTwo}")
+        public List<Reservation>getReservationReportDates(@PathVariable("dateOne")String dateOne,@PathVariable("dateTwo")String dateTwo){
+            return reservationService.getReservationPeriod(dateOne,dateTwo);
+    }
+}
